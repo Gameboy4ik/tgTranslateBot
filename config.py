@@ -1,3 +1,4 @@
+from calendar import different_locale
 from telebot import types
 
 TOKEN = '5752873117:AAE06L9-W9wy-OOiyjeWrOOknbf4Wte21pY' # bot token
@@ -113,7 +114,11 @@ LANGUAGES = {
 }
 
 
-markup = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-item1 = types.KeyboardButton('🇷🇺 ru')
-item2 = types.KeyboardButton('🇬🇧 en')
-markup.add(item1, item2)
+start_markup = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+ru_lang = types.KeyboardButton('🇷🇺 ru')
+en_lang = types.KeyboardButton('🇬🇧 en')
+start_markup.add(ru_lang, en_lang)
+
+menu = types.ReplyKeyboardMarkup(resize_keyboard=True)
+different_lang = types.KeyboardButton('Choose Different Language')
+menu.add(different_lang)
