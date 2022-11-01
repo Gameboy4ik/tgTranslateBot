@@ -113,11 +113,19 @@ LANGUAGES = {
     'zu': 'zulu',
 }
 
+interface = None
+
+interface_language = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+ru_interface_lang = types.KeyboardButton('🇷🇺 Русский')
+en_interface_lang = types.KeyboardButton('🇬🇧 English')
+ua_interface_lang = types.KeyboardButton('🇺🇦 Українська')
+interface_language.add(en_interface_lang, ua_interface_lang, ru_interface_lang)
 
 start_markup = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-ru_lang = types.KeyboardButton('🇷🇺 ru')
-en_lang = types.KeyboardButton('🇬🇧 en')
-start_markup.add(ru_lang, en_lang)
+ru_lang = types.KeyboardButton('🇷🇺 RU')
+en_lang = types.KeyboardButton('🇬🇧 EN')
+ua_lang = types.KeyboardButton('🇺🇦 UA')
+start_markup.add(en_lang, ua_lang, ru_lang)
 
 menu = types.ReplyKeyboardMarkup(resize_keyboard=True)
 different_lang = types.KeyboardButton('Choose Different Language')
