@@ -1,6 +1,6 @@
 from telebot import types
 
-TOKEN = '5752873117:AAE06L9-W9wy-OOiyjeWrOOknbf4Wte21pY' # bot token
+TOKEN = '5433231218:AAGPfD0VW_iVM722S5MLxLiTQRS7X4ET8nQ' # bot token
 
 ENG_LANGUAGES = {
     'af': 'afrikaans',
@@ -343,6 +343,8 @@ ukrainian = {
     8:'Змінити мову інтерфейсу',
     9:'Виберіть іншу мову інтерфейсу:',
     10:'Мова інтерфейсу змінена.',
+    11:'Самостійно вибрати початкову та остаточну мову',
+    12:'Параметри ⚙️',
 }
 
 russian = {
@@ -356,6 +358,8 @@ russian = {
     8:'Сменить язык интерфейса',
     9:'Выберите другой язык интерфейса:',
     10:'Язык интерфейса изменён.',
+    11:'Самостоятельно выбрать начальный и окончательный язык',
+    12:'Параметры ⚙️',
 }
 
 english = {
@@ -369,6 +373,8 @@ english = {
     8:'Change interface language',
     9:'Select another interface language:',
     10:'Interface language changed.',
+    11:'Independently choose the initial and final language',
+    12:'Options ⚙️',
 }
 
 interface = None
@@ -384,19 +390,40 @@ start_markup = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard
 ru_lang = types.KeyboardButton('🇷🇺 RU')
 en_lang = types.KeyboardButton('🇬🇧 EN')
 ua_lang = types.KeyboardButton('🇺🇦 UA')
-start_markup.add(en_lang, ua_lang, ru_lang)
+different_lang = types.KeyboardButton('different')
+start_markup.add(en_lang, ua_lang, ru_lang, different_lang)
 
 ukr_menu = types.ReplyKeyboardMarkup(resize_keyboard=True)
-ukr_different_lang = types.KeyboardButton(ukrainian[6])
-ukr_different_interface_lang = types.KeyboardButton(ukrainian[8])
-ukr_menu.add(ukr_different_lang, ukr_different_interface_lang)
+ukr_options = types.KeyboardButton(ukrainian[12])
+ukr_menu.add(ukr_options)
+
+ukr_options_menu = types.InlineKeyboardMarkup(row_width=1)
+ukr_different_lang = types.InlineKeyboardButton(ukrainian[6], callback_data='switch_second')
+ukr_different_interface_lang = types.InlineKeyboardButton(ukrainian[8], callback_data='switch_interface')
+# ukr_different_both_lang = types.InlineKeyboardButton(ukrainian[11], callback_data='switch_both')
+ukr_options_menu.add(ukr_different_lang, ukr_different_interface_lang)
 
 rus_menu = types.ReplyKeyboardMarkup(resize_keyboard=True)
-rus_different_lang = types.KeyboardButton(russian[6])
-rus_different_interface_lang = types.KeyboardButton(russian[8])
-rus_menu.add(rus_different_lang, rus_different_interface_lang)
+rus_options = types.KeyboardButton(russian[12])
+rus_menu.add(rus_options)
+
+rus_options_menu = types.InlineKeyboardMarkup(row_width=1)
+rus_different_lang = types.InlineKeyboardButton(russian[6], callback_data='switch_second')
+rus_different_interface_lang = types.InlineKeyboardButton(russian[8], callback_data='switch_interface')
+# rus_different_both_lang = types.InlineKeyboardButton(russian[11], callback_data='switch_both')
+rus_options_menu.add(rus_different_lang, rus_different_interface_lang)
 
 eng_menu = types.ReplyKeyboardMarkup(resize_keyboard=True)
-eng_different_lang = types.KeyboardButton(english[6])
-eng_different_interface_lang = types.KeyboardButton(english[8])
-eng_menu.add(eng_different_lang, eng_different_interface_lang)
+eng_options = types.KeyboardButton(english[12])
+eng_menu.add(eng_options)
+
+eng_options_menu = types.InlineKeyboardMarkup(row_width=1)
+eng_different_lang = types.InlineKeyboardButton(english[6], callback_data='switch_second')
+eng_different_interface_lang = types.InlineKeyboardButton(english[8], callback_data='switch_interface')
+# eng_different_both_lang = types.InlineKeyboardButton(english[11], callback_data='switch_both')
+eng_options_menu.add(eng_different_lang, eng_different_interface_lang)
+
+test_different_lang_buttons = types.InlineKeyboardMarkup(row_width=3)
+btn = types.InlineKeyboardButton('hello')
+test_different_lang_buttons.add(btn)
+        

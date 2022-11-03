@@ -48,6 +48,10 @@ def translating(message):
                     bot.send_message(message.chat.id, config.ukrainian[3],
                         parse_mode='html', reply_markup=config.ukr_menu)
                 language_set = True
+            elif message.text == 'different':
+                bot.send_message(message.chat.id, 'select new language please', reply_markup=config.test_different_lang_buttons)
+                # language = 'uk'
+                language_set = True
             else: # if user don't choose language from buttons, bot will ask user to write a language 
                 for key, msg in config.ENG_LANGUAGES.items():
                     if msg == message.text.lower() or key == message.text.lower() and language_set == False: 
@@ -123,6 +127,12 @@ def translating(message):
             bot.send_message(message.chat.id, config.ukrainian[9], reply_markup=config.interface_language)
         elif message.text == '🇷🇺 Русский' or message.text == '🇬🇧 English' or message.text == '🇺🇦 Українська':
             pass
+        elif message.text == 'Параметри ⚙️':
+            bot.send_message(message.chat.id, config.ukrainian[12], reply_markup=config.ukr_options_menu)
+        elif message.text == 'Параметры ⚙️':
+            bot.send_message(message.chat.id, config.russian[12], reply_markup=config.rus_options_menu)
+        elif message.text == 'Options ⚙️':
+            bot.send_message(message.chat.id, config.english[12], reply_markup=config.eng_options_menu)
         else:
             bot.send_message(message.chat.id,
                 (translator.translate(message.text, language)).text)
@@ -176,5 +186,26 @@ def interface(message):
             bot.send_message(message.chat.id, config.ukrainian[10], reply_markup=config.ukr_menu)
     translating(message)
 
+@bot.callback_query_handler(func=lambda call: True)
+def callback_inline(call):
+    global language_set, reset_language
+    if call.message:
+        if call.data == 'switch_second':
+            language_set = False
+            reset_language = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id, config.english[7])
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, config.russian[7])
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, config.ukrainian[7])
+        elif call.data == 'switch_interface':
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id, config.english[9], reply_markup=config.interface_language)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, config.russian[9], reply_markup=config.interface_language)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, config.ukrainian[9], reply_markup=config.interface_language)
+            
 
 bot.infinity_polling()
