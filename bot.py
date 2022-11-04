@@ -149,9 +149,13 @@ def translating(message):
 
 @bot.message_handler(commands=['start'])
 def welcome(message): # welcome function
-    global language_set
+    global language_set, reset_language, switching_first, switching_second
     config.second_language = ''
-    language_set = False
+    config.first_language = 'auto'
+    language_set = False 
+    reset_language = False
+    switching_first = False
+    switching_second = True
     bot.send_message(message.chat.id,
         "🇬🇧 Choose the interface language:\n🇺🇦 Виберіть мову інтерфейсу:\n🇷🇺 Выберите язык интерфейса:",
         reply_markup=config.interface_language)
@@ -212,22 +216,47 @@ def callback_inline(call):
                 bot.send_message(call.message.chat.id, config.ukrainian[9], reply_markup=config.interface_language)
         elif call.data == 'switch_both':
             if config.interface == 'english':
-                bot.edit_message_text(f'first: {config.first_language}\nsecond: {config.second_language}', call.message.chat.id, call.message.message_id)
+                if config.first_language == 'auto':
+                    bot.edit_message_text(f'First: <b>Auto</b>\nSecond: {languages_keyboard.ENG_LANGUAGES[config.second_language].title()}', call.message.chat.id, call.message.message_id, parse_mode='html')
+                else:
+                    bot.edit_message_text(f'First: <b>{languages_keyboard.ENG_LANGUAGES[config.first_language].title()}</b>\nSecond: <b>{languages_keyboard.ENG_LANGUAGES[config.second_language].title()}</b>', call.message.chat.id, call.message.message_id, parse_mode='html')
                 bot.edit_message_reply_markup(call.message.chat.id, call.message.message_id, reply_markup=config.eng_both_languages)
             elif config.interface == 'russian':
-                bot.edit_message_text(f'первый: {config.first_language}\nвторой: {config.second_language}', call.message.chat.id, call.message.message_id)
+                if config.first_language == 'auto':
+                    bot.edit_message_text(f'Первый: <b>Авто</b>\nВторой: <b>{languages_keyboard.RUS_LANGUAGES[config.second_language].title()}</b>', call.message.chat.id, call.message.message_id, parse_mode='html')
+                else:
+                    bot.edit_message_text(f'Первый: <b>{languages_keyboard.RUS_LANGUAGES[config.first_language].title()}</b>\nВторой: <b>{languages_keyboard.RUS_LANGUAGES[config.second_language].title()}</b>', call.message.chat.id, call.message.message_id, parse_mode='html')
                 bot.edit_message_reply_markup(call.message.chat.id, call.message.message_id, reply_markup=config.rus_both_languages)
             elif config.interface == 'ukrainian':
-                bot.edit_message_text(f'перший: {config.first_language}\nдругий: {config.second_language}', call.message.chat.id, call.message.message_id)
+                if config.first_language == 'auto':
+                    bot.edit_message_text(f'Перший: <b>Авто</b>\nДругий: <b>{languages_keyboard.UKR_LANGUAGES[config.second_language].title()}</b>', call.message.chat.id, call.message.message_id, parse_mode='html')
+                else:
+                    bot.edit_message_text(f'Перший: <b>{languages_keyboard.UKR_LANGUAGES[config.first_language].title()}</b>\nДругий: <b>{languages_keyboard.UKR_LANGUAGES[config.second_language].title()}</b>', call.message.chat.id, call.message.message_id, parse_mode='html')
                 bot.edit_message_reply_markup(call.message.chat.id, call.message.message_id, reply_markup=config.ukr_both_languages)
         elif call.data == 'switch_first':
             switching_first = True
             switching_second = False
-            bot.send_message(call.message.chat.id, 'choose first', reply_markup=config.eng_different_lang_buttons1)
+            if config.interface == 'english':
+                bot.edit_message_text('Choose first:', call.message.chat.id, call.message.message_id)
+                bot.edit_message_reply_markup(call.message.chat.id, call.message.message_id, reply_markup=config.eng_different_lang_buttons1)
+            elif config.interface == 'russian':
+                bot.edit_message_text('Выберите первый:', call.message.chat.id, call.message.message_id)
+                bot.edit_message_reply_markup(call.message.chat.id, call.message.message_id, reply_markup=config.rus_different_lang_buttons1)
+            elif config.interface == 'ukrainian':
+                bot.edit_message_text('Виберіть першу:', call.message.chat.id, call.message.message_id)
+                bot.edit_message_reply_markup(call.message.chat.id, call.message.message_id, reply_markup=config.ukr_different_lang_buttons1)
         elif call.data == 'swtich_second':
             switching_first = False
             switching_second = True
-            bot.send_message(call.message.chat.id, 'choose second', reply_markup=config.eng_different_lang_buttons1)
+            if config.interface == 'english':
+                bot.edit_message_text('Choose second:', call.message.chat.id, call.message.message_id)
+                bot.edit_message_reply_markup(call.message.chat.id, call.message.message_id, reply_markup=config.eng_different_lang_buttons1)
+            elif config.interface == 'russian':
+                bot.edit_message_text('Выберите второй:', call.message.chat.id, call.message.message_id)
+                bot.edit_message_reply_markup(call.message.chat.id, call.message.message_id, reply_markup=config.rus_different_lang_buttons1)
+            elif config.interface == 'ukrainian':
+                bot.edit_message_text('Виберіть другу:', call.message.chat.id, call.message.message_id)
+                bot.edit_message_reply_markup(call.message.chat.id, call.message.message_id, reply_markup=config.ukr_different_lang_buttons1)
         elif call.data == 'eng_next':
             bot.edit_message_reply_markup(call.message.chat.id, call.message.message_id, reply_markup=config.eng_different_lang_buttons2)
         elif call.data == 'eng_next2':
