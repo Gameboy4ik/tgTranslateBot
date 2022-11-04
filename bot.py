@@ -49,8 +49,13 @@ def translating(message):
                     bot.send_message(message.chat.id, config.ukrainian[3],
                         parse_mode='html', reply_markup=config.ukr_menu)
                 language_set = True
-            elif message.text == 'different':
-                bot.send_message(message.chat.id, 'select new language please', reply_markup=config.eng_different_lang_buttons1)
+            elif message.text == '...':
+                if config.interface == 'english':
+                    bot.send_message(message.chat.id, 'Select new language please', reply_markup=config.eng_different_lang_buttons1)
+                elif config.interface == 'russian':
+                    bot.send_message(message.chat.id, 'Выберите новый язык пожалуйста', reply_markup=config.rus_different_lang_buttons1)
+                elif config.interface == 'ukrainian':
+                    bot.send_message(message.chat.id, 'Виберіть нову мову будь ласка', reply_markup=config.ukr_different_lang_buttons1)
                 language_set = True
             else: # if user don't choose language from buttons, bot will ask user to write a language 
                 for key, msg in languages_keyboard.ENG_LANGUAGES.items():
@@ -110,16 +115,16 @@ def translating(message):
         if message.text == config.english[6]:
             language_set = False
             reset_language = True
-            bot.send_message(message.chat.id, config.english[7])
+            bot.send_message(message.chat.id, config.english[7], reply_markup=config.eng_different_lang_buttons1)
         elif message.text == config.russian[6]:
             language_set = False
             reset_language = True
-            bot.send_message(message.chat.id, config.russian[7])
+            bot.send_message(message.chat.id, config.russian[7], reply_markup=config.rus_different_lang_buttons1)
         elif message.text == config.ukrainian[6]:
             language_set = False
             reset_language = True
-            bot.send_message(message.chat.id, config.ukrainian[7])
-        elif message.text == config.english[8]:
+            bot.send_message(message.chat.id, config.ukrainian[7], reply_markup=config.ukr_different_lang_buttons1)
+        if message.text == config.english[8]:
             bot.send_message(message.chat.id, config.english[9], reply_markup=config.interface_language)
         elif message.text == config.russian[8]:
             bot.send_message(message.chat.id, config.russian[9], reply_markup=config.interface_language)
@@ -157,9 +162,6 @@ def interface(message):
             bot.send_message(message.chat.id, "Привет, я попробую перевести твои сообщения.")
             bot.send_message(message.chat.id, "Чтобы я мог работать правильно, пожалуйста,"+
                 " выберите язык, на который хотите перевести текст.", reply_markup=config.start_markup)
-            bot.send_message(message.chat.id, "<b>P.S:</b> Если нужного вам языка не оказалось"+
-                " в вариантах ответа, пожалуйста, введите язык в сообщении и я постараюсь найти его.",
-                parse_mode='html')
         else:
             bot.send_message(message.chat.id, config.russian[10], reply_markup=config.rus_menu)
     elif message.text == '🇬🇧 English': # interface changing on english
@@ -168,9 +170,6 @@ def interface(message):
             bot.send_message(message.chat.id, "Hello, I'll try to translate your messages.")
             bot.send_message(message.chat.id, "So that I can work correctly, please select"+
                 " the language you want to translate into.", reply_markup=config.start_markup)
-            bot.send_message(message.chat.id, "<b>P.S:</b> If the language you need is not in"+
-                " the answer options, please enter the language in the message and I'll try to find it.",
-                parse_mode='html')
         else:
             bot.send_message(message.chat.id, config.english[10], reply_markup=config.eng_menu)
     elif message.text == '🇺🇦 Українська': # interface changing on ukrainian
@@ -179,9 +178,6 @@ def interface(message):
             bot.send_message(message.chat.id, "Привіт, я спробую перекласти твої повідомлення.")
             bot.send_message(message.chat.id, "Щоб я міг працювати правильно, будь ласка,"+
                 " оберіть мову, на яку хочете перекласти текст.", reply_markup=config.start_markup)
-            bot.send_message(message.chat.id, "<b>P.S:</b> Якщо потрібної вам мови не виявилося"+
-                " в варіантах відповіді, будь ласка, введіть мову в повідомлені і я постараюся знайти її.",
-                parse_mode='html')
         else:
             bot.send_message(message.chat.id, config.ukrainian[10], reply_markup=config.ukr_menu)
     translating(message)
@@ -194,11 +190,11 @@ def callback_inline(call):
             language_set = False
             reset_language = True
             if config.interface == 'english':
-                bot.send_message(call.message.chat.id, config.english[7])
+                bot.send_message(call.message.chat.id, config.english[7], reply_markup=config.eng_different_lang_buttons1)
             elif config.interface == 'russian':
-                bot.send_message(call.message.chat.id, config.russian[7])
+                bot.send_message(call.message.chat.id, config.russian[7], reply_markup=config.rus_different_lang_buttons1)
             elif config.interface == 'ukrainian':
-                bot.send_message(call.message.chat.id, config.ukrainian[7])
+                bot.send_message(call.message.chat.id, config.ukrainian[7], reply_markup=config.ukr_different_lang_buttons1)
         elif call.data == 'switch_interface':
             if config.interface == 'english':
                 bot.send_message(call.message.chat.id, config.english[9], reply_markup=config.interface_language)
@@ -206,339 +202,1108 @@ def callback_inline(call):
                 bot.send_message(call.message.chat.id, config.russian[9], reply_markup=config.interface_language)
             elif config.interface == 'ukrainian':
                 bot.send_message(call.message.chat.id, config.ukrainian[9], reply_markup=config.interface_language)
-        elif call.data == 'next':
+        elif call.data == 'eng_next':
             bot.edit_message_reply_markup(call.message.chat.id, call.message.message_id, reply_markup=config.eng_different_lang_buttons2)
-        elif call.data == 'next2':
+        elif call.data == 'eng_next2':
             bot.edit_message_reply_markup(call.message.chat.id, call.message.message_id, reply_markup=config.eng_different_lang_buttons3)
-        elif call.data == 'next3':
+        elif call.data == 'eng_next3':
             bot.edit_message_reply_markup(call.message.chat.id, call.message.message_id, reply_markup=config.eng_different_lang_buttons4)
-        elif call.data == 'back':
+        elif call.data == 'eng_back':
             bot.edit_message_reply_markup(call.message.chat.id, call.message.message_id, reply_markup=config.eng_different_lang_buttons1)
-        elif call.data == 'back2':
+        elif call.data == 'eng_back2':
             bot.edit_message_reply_markup(call.message.chat.id, call.message.message_id, reply_markup=config.eng_different_lang_buttons2)
-        elif call.data == 'back3':
+        elif call.data == 'eng_back3':
             bot.edit_message_reply_markup(call.message.chat.id, call.message.message_id, reply_markup=config.eng_different_lang_buttons3)
+        elif call.data == 'rus_next':
+            bot.edit_message_reply_markup(call.message.chat.id, call.message.message_id, reply_markup=config.rus_different_lang_buttons2)
+        elif call.data == 'rus_next2':
+            bot.edit_message_reply_markup(call.message.chat.id, call.message.message_id, reply_markup=config.rus_different_lang_buttons3)
+        elif call.data == 'rus_next3':
+            bot.edit_message_reply_markup(call.message.chat.id, call.message.message_id, reply_markup=config.rus_different_lang_buttons4)
+        elif call.data == 'rus_back':
+            bot.edit_message_reply_markup(call.message.chat.id, call.message.message_id, reply_markup=config.rus_different_lang_buttons1)
+        elif call.data == 'rus_back2':
+            bot.edit_message_reply_markup(call.message.chat.id, call.message.message_id, reply_markup=config.rus_different_lang_buttons2)
+        elif call.data == 'rus_back3':
+            bot.edit_message_reply_markup(call.message.chat.id, call.message.message_id, reply_markup=config.rus_different_lang_buttons3)
+        elif call.data == 'ukr_next':
+            bot.edit_message_reply_markup(call.message.chat.id, call.message.message_id, reply_markup=config.ukr_different_lang_buttons2)
+        elif call.data == 'ukr_next2':
+            bot.edit_message_reply_markup(call.message.chat.id, call.message.message_id, reply_markup=config.ukr_different_lang_buttons3)
+        elif call.data == 'ukr_next3':
+            bot.edit_message_reply_markup(call.message.chat.id, call.message.message_id, reply_markup=config.ukr_different_lang_buttons4)
+        elif call.data == 'ukr_back':
+            bot.edit_message_reply_markup(call.message.chat.id, call.message.message_id, reply_markup=config.ukr_different_lang_buttons1)
+        elif call.data == 'ukr_back2':
+            bot.edit_message_reply_markup(call.message.chat.id, call.message.message_id, reply_markup=config.ukr_different_lang_buttons2)
+        elif call.data == 'ukr_back3':
+            bot.edit_message_reply_markup(call.message.chat.id, call.message.message_id, reply_markup=config.ukr_different_lang_buttons3)
         elif call.data == 'af':
             language = 'afrikaans'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{language.title()}</b> установлен.', parse_mode='html')
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{language.title()}</b> встановлена.', parse_mode='html')
         elif call.data == 'sq':
             language = 'albanian'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'am':
             language = 'amharic'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'ar':
             language = 'arabic'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b>set.', parse_mode='html')
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'hy':
             language = 'armenian'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'az':
             language = 'azerbaijani'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'eu':
             language = 'basque'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'be':
             language = 'belarusian'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'bn':
             language = 'bengali'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'bs':
             language = 'bosnian'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'bg':
             language = 'bulgarian'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'ca':
             language = 'catalan'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'ceb':
             language = 'cebuano'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'ny':
             language = 'chichewa'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'zh-cn':
             language = 'chinese (simplified)'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'zh-tw':
             language = 'chinese (traditional)'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'co':
             language = 'corsican'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'hr':
             language = 'croatian'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'cs':
             language = 'czech'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'da':
             language = 'danish'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'nl':
             language = 'dutch'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'en':
             language = 'english'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'eo':
             language = 'esperanto'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'et':
             language = 'estonian'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'tl':
             language = 'filipino'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'fi':
             language = 'finnish'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface== 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'fr':
             language = 'french'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'fy':
             language = 'frisian'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'gl':
             language = 'galician'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'ka':
             language = 'georgian'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'de':
             language = 'german'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'el':
             language = 'greek'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'gu':
             language = 'gujarati'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'ht':
             language = 'haitian creole'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'ha':
             language = 'hausa'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'haw':
             language = 'hawaiian'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'iw':
             language = 'hebrew'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'he':
             language = 'hebrew'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'hi':
             language = 'hindi'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'hmn':
             language = 'hmong'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'hu':
             language = 'hungarian'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'is':
             language = 'icelandic'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'ig':
             language = 'igbo'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'id':
             language = 'indonesian'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'ga':
             language = 'irish'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'it':
             language = 'italian'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'ja':
             language = 'japanese'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'jw':
             language = 'javanese'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'kn':
             language = 'kannada'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'kk':
             language = 'kazakh'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'km':
             language = 'khmer'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'ko':
             language = 'korean'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'ku':
             language = 'kurdish (kurmanji)'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'ky':
             language = 'kyrgyz'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'lo':
             language = 'lao'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'la':
             language = 'latin'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'lv':
             language = 'latvian'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'lt':
             language = 'lithuanian'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'lb':
             language = 'luxembourgish'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'mk':
             language = 'macedonian'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'mg':
             language = 'malagasy'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'ms':
             language = 'malay'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'ml':
             language = 'malayalam'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'mt':
             language = 'maltese'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface== 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'mi':
             language = 'maori'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'mr':
             language = 'marathi'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'mn':
             language = 'mongolian'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'my':
             language = 'myanmar (burmese)'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'ne':
             language = 'nepali'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'no':
             language = 'norwegian'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'or':
             language = 'odia'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'ps':
             language = 'pashto'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'fa':
             language = 'persian'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'pl':
             language = 'polish'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'pt':
             language = 'portuguese'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'pa':
             language = 'punjabi'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'ro':
             language = 'romanian'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'ru':
             language = 'russian'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'sm':
             language = 'samoan'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'gd':
             language = 'scots gaelic'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'sr':
             language = 'serbian'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'st':
             language = 'sesotho'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'sn':
             language = 'shona'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'sd':
             language = 'sindhi'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'si':
             language = 'sinhala'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'sk':
             language = 'slovak'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'sl':
             language = 'slovenian'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'so':
             language = 'somali'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'es':
             language = 'spanish'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'su':
             language = 'sundanese'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'sw':
             language = 'swahili'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'sv':
             language = 'swedish'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'tg':
             language = 'tajik'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'ta':
             language = 'tamil'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'te':
             language = 'telugu'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'th':
             language = 'thai'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'tr':
             language = 'turkish'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'uk':
             language = 'ukrainian'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'ur':
             language = 'urdu'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'ug':
             language ='uyghur'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'uz':
             language = 'uzbek'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'vi':
             language = 'vietnamese'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'cy':
             language = 'welsh'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'xh':
             language = 'xhosa'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'yi':
             language = 'yiddish'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'yo':
             language = 'yoruba'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         elif call.data == 'zu':
             language = 'zulu'
-            bot.send_message(call.message.chat.id,  f'{language.title()} set')
+            reset_language = False
+            language_set = True
+            if config.interface == 'english':
+                bot.send_message(call.message.chat.id,  f'<b>{language.title()}</b> set.', parse_mode='html', reply_markup=config.eng_menu)
+            elif config.interface == 'russian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.RUS_LANGUAGES[call.data].title()}</b> установлен.', parse_mode='html', reply_markup=config.rus_menu)
+            elif config.interface == 'ukrainian':
+                bot.send_message(call.message.chat.id, f'<b>{languages_keyboard.UKR_LANGUAGES[call.data].title()}</b> встановлена.', parse_mode='html', reply_markup=config.ukr_menu)
         
             
             
