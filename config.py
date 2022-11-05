@@ -1,7 +1,7 @@
 from telebot import types
 import languages_keyboard
 
-TOKEN = '5433231218:AAGPfD0VW_iVM722S5MLxLiTQRS7X4ET8nQ'  # bot token
+TOKEN = 'your token'  # bot token
 
 first_language = 'auto'
 second_language = ''
