@@ -1,54 +1,54 @@
 from telebot import types
 import languages_keyboard
 
-TOKEN = '5433231218:AAGPfD0VW_iVM722S5MLxLiTQRS7X4ET8nQ' # bot token
+TOKEN = '5433231218:AAGPfD0VW_iVM722S5MLxLiTQRS7X4ET8nQ'  # bot token
 
 first_language = 'auto'
 second_language = ''
 
 ukrainian = {
-    1:'Мова перекладу <b>Російська</b> встановлена.',
-    2:'Мова перекладу <b>Англійська</b> встановлена.',
-    3:'Мова перекладу <b>Українська</b> встановлена.',
+    1: 'Мова перекладу <b>Російська</b> встановлена.',
+    2: 'Мова перекладу <b>Англійська</b> встановлена.',
+    3: 'Мова перекладу <b>Українська</b> встановлена.',
     # 4:f'<b>{language.title()}</b> встановлен.',
-    5:'Такої мови немає в нашій базі даних. Спробуйте ще раз.',
-    6:'Виберіть іншу мову',
-    7:'Введіть іншу мову.',
-    8:'Змінити мову інтерфейсу',
-    9:'Виберіть іншу мову інтерфейсу:',
-    10:'Мова інтерфейсу змінена.',
-    11:'Самостійно вибрати початкову та остаточну мову',
-    12:'Параметри ⚙️',
+    5: 'Такої мови немає в нашій базі даних. Спробуйте ще раз.',
+    6: 'Виберіть іншу мову',
+    7: 'Введіть іншу мову.',
+    8: 'Змінити мову інтерфейсу',
+    9: 'Виберіть іншу мову інтерфейсу:',
+    10: 'Мова інтерфейсу змінена.',
+    11: 'Самостійно вибрати початкову та остаточну мову',
+    12: 'Параметри ⚙️',
 }
 
 russian = {
-    1:'Язык перевода <b>Русский</b> установлен.',
-    2:'Язык перевода <b>Английский</b> установлен.',
-    3:'Язык перевода <b>Украинский</b> установлен.',
+    1: 'Язык перевода <b>Русский</b> установлен.',
+    2: 'Язык перевода <b>Английский</b> установлен.',
+    3: 'Язык перевода <b>Украинский</b> установлен.',
     # 4:f'<b>{language.title()}</b> установлен.',
-    5:'Такого языка нет в нашей базе данных. Попробуйте ещё раз.',
-    6:'Выберите другой язык',
-    7:'Введите другой язык.',
-    8:'Сменить язык интерфейса',
-    9:'Выберите другой язык интерфейса:',
-    10:'Язык интерфейса изменён.',
-    11:'Самостоятельно выбрать начальный и окончательный язык',
-    12:'Параметры ⚙️',
+    5: 'Такого языка нет в нашей базе данных. Попробуйте ещё раз.',
+    6: 'Выберите другой язык',
+    7: 'Введите другой язык.',
+    8: 'Сменить язык интерфейса',
+    9: 'Выберите другой язык интерфейса:',
+    10: 'Язык интерфейса изменён.',
+    11: 'Самостоятельно выбрать начальный и окончательный язык',
+    12: 'Параметры ⚙️',
 }
 
 english = {
-    1:'Translation language <b>Russian</b> is set.',
-    2:'Translation language <b>English</b> is set.',
-    3:'Translation language <b>Ukrainian</b> is set.',
+    1: 'Translation language <b>Russian</b> is set.',
+    2: 'Translation language <b>English</b> is set.',
+    3: 'Translation language <b>Ukrainian</b> is set.',
     # 4:f'<b>{language.title()}</b> set.',
-    5:'This language is not in our database. Try again.',
-    6:'Select another language',
-    7:'Enter another language.',
-    8:'Change interface language',
-    9:'Select another interface language:',
-    10:'Interface language changed.',
-    11:'Independently choose the initial and final language',
-    12:'Options ⚙️',
+    5: 'This language is not in our database. Try again.',
+    6: 'Select another language',
+    7: 'Enter another language.',
+    8: 'Change interface language',
+    9: 'Select another interface language:',
+    10: 'Interface language changed.',
+    11: 'Independently choose the initial and final language',
+    12: 'Options ⚙️',
 }
 
 interface = None

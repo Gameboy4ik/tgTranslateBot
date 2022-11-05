@@ -335,6 +335,9 @@ list_rus_buttons = []
 list_ukr_buttons = []
 
 for i in range(107):
-    list_eng_buttons.append(types.InlineKeyboardButton(text=list(ENG_LANGUAGES.values())[i], callback_data=list(ENG_LANGUAGES.keys())[i]))
-    list_rus_buttons.append(types.InlineKeyboardButton(text=list(RUS_LANGUAGES.values())[i], callback_data=list(RUS_LANGUAGES.keys())[i]))
-    list_ukr_buttons.append(types.InlineKeyboardButton(text=list(UKR_LANGUAGES.values())[i], callback_data=list(UKR_LANGUAGES.keys())[i]))
+    list_eng_buttons.append(types.InlineKeyboardButton(text=list(ENG_LANGUAGES.values())[i],
+                                                       callback_data=list(ENG_LANGUAGES.keys())[i]))
+    list_rus_buttons.append(types.InlineKeyboardButton(text=list(RUS_LANGUAGES.values())[i],
+                                                       callback_data=list(RUS_LANGUAGES.keys())[i]))
+    list_ukr_buttons.append(types.InlineKeyboardButton(text=list(UKR_LANGUAGES.values())[i],
+                                                       callback_data=list(UKR_LANGUAGES.keys())[i]))
